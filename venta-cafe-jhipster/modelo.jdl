@@ -1,0 +1,39 @@
+application {
+  config {
+    baseName ventacafeapp
+    packageName com.ventacafe
+    applicationType monolith
+    authenticationType jwt
+    databaseType sql
+    devDatabaseType h2Disk
+    prodDatabaseType postgresql
+    buildTool maven
+    serverPort 8080
+  }
+  entities Cliente, Producto, Venta
+}
+
+entity Cliente {
+  nombre String required
+  email String required
+  telefono String
+}
+
+entity Producto {
+  nombre String required
+  precio Long required
+  stock Integer
+}
+
+entity Venta {
+  fecha Instant required
+  cantidad Integer required
+  total Long required
+}
+
+relationship ManyToOne {
+  Venta{cliente} to Cliente
+  Venta{producto} to Producto
+}
+
+service all with serviceClass

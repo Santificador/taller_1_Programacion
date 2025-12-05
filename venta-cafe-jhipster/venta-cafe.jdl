@@ -1,0 +1,307 @@
+// ============================================
+// Sistema de Venta de Café - Modelado JDL
+// ============================================
+
+// Configuración de la aplicación
+application {
+  config {
+    baseName ventaCafe
+    applicationType monolith
+    packageName com.ventacafe
+    serverPort 8080
+    cacheProvider ehcache
+    databaseType sql
+    devDatabaseType postgresql
+    prodDatabaseType postgresql
+    authenticationType jwt
+    enableTranslation true
+    nativeLanguage es
+    languages [es, en]
+    clientFramework react
+    clientTheme bootswatch
+    clientThemeVariant spacelab
+    buildTool maven
+    jhipsterVersion 8.1.0
+    serviceDiscoveryType no
+    enableSwaggerCodegen false
+    skipUserManagement false
+    skipCheckLengthOfIdentifier false
+    enableHibernateCache true
+    preselectBlueprint false
+  }
+
+  entities *
+  skipClient false
+  skipServer false
+}
+
+// ============================================
+// ENUMERACIONES
+// ============================================
+
+// Tipos de tostado de café
+enum TipoTostado {
+  CLARO(1),
+  MEDIO(2),
+  OSCURO(3)
+}
+
+// Tipos de acciones en auditoría
+enum TipoAccion {
+  CREACION,
+  MODIFICACION,
+  ELIMINACION
+}
+
+enum EstadoVenta {
+  PENDIENTE,
+  CONFIRMADA,
+  ENTREGADA,
+  CANCELADA
+}
+
+// ============================================
+// ENTIDADES PRINCIPALES
+// ============================================
+
+/**
+ * Entidad de Café - Productos disponibles
+ */
+@skipClient
+entity Cafe {
+  nombre String required minlength(3) maxlength(100)
+  descripcion String maxlength(500)
+  precio BigDecimal required min(0)
+  origen String required maxlength(100)
+  tipoTostado TipoTostado required
+  disponible Boolean required default(true)
+  stock Integer required min(0) default(0)
+  creadoEn Instant
+  modificadoEn Instant
+}
+
+/**
+ * Entidad de Cliente - Compradores de café
+ */
+entity Cliente {
+  nombre String required minlength(2) maxlength(100)
+  apellido String required minlength(2) maxlength(100)
+  email String required pattern("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
+  telefono String maxlength(20)
+  direccion String maxlength(255)
+  ciudad String maxlength(50)
+  codigoPostal String maxlength(20)
+  pais String maxlength(100)
+  activo Boolean required default(true)
+  fechaRegistro Instant required
+}
+
+/**
+ * Entidad de Venta - Registro de transacciones
+ */
+entity Venta {
+  cantidad Integer required min(1)
+  precioUnitario BigDecimal required min(0)
+  montoTotal BigDecimal required min(0)
+  fecha LocalDate required
+  estado EstadoVenta required default(PENDIENTE)
+  observaciones String maxlength(500)
+  creadoPor String required
+  fechaCreacion Instant required
+  modificadoPor String
+  fechaModificacion Instant
+}
+
+/**
+ * Entidad de Usuario - Vendedores y administradores
+ */
+@skipClient
+entity Usuario {
+  nombre String required minlength(2) maxlength(100)
+  correo String required pattern("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
+  telefono String maxlength(20)
+  rol String required
+  activo Boolean required default(true)
+  fechaRegistro Instant required
+}
+
+/**
+ * Entidad de Auditoría - Trazabilidad de cambios
+ */
+@skipClient
+entity Auditoria {
+  nombreEntidad String required
+  accion TipoAccion required
+  usuario String required
+  fechaHora Instant required
+  idRegistro Long
+  valoresAnteriores String
+  valoresNuevos String
+  detalles String maxlength(1000)
+  ipAddress String
+}
+
+/**
+ * Entidad de Detalle de Venta - Items de cada venta
+ */
+@skipClient
+entity DetalleVenta {
+  cantidad Integer required min(1)
+  precioUnitario BigDecimal required min(0)
+  subtotal BigDecimal required min(0)
+  descuentoPorcentaje BigDecimal min(0) max(100) default(0)
+  descuentoMonto BigDecimal min(0) default(0)
+  totalLinea BigDecimal required min(0)
+}
+
+/**
+ * Entidad de Cupón/Descuento - Promociones
+ */
+@skipClient
+entity Cupon {
+  codigo String required unique maxlength(50)
+  descripcion String maxlength(255)
+  descuentoPorcentaje BigDecimal min(0) max(100)
+  descuentoFijo BigDecimal min(0)
+  fechaInicio LocalDate required
+  fechaFin LocalDate required
+  cantidadUsos Integer min(0)
+  cantidadUsosMaximo Integer min(1)
+  activo Boolean required default(true)
+}
+
+/**
+ * Entidad de Reporte - Análisis de ventas
+ */
+@skipClient
+entity Reporte {
+  titulo String required
+  descripcion String maxlength(500)
+  tipo String required
+  fechaGeneracion Instant required
+  periodoInicio LocalDate
+  periodoFin LocalDate
+  datos String
+}
+
+// ============================================
+// RELACIONES
+// ============================================
+
+// Cliente - Venta (One to Many)
+relationship OneToMany {
+  Cliente{ventas} to Venta{cliente(nombre) required}
+}
+
+// Café - Venta (One to Many)
+relationship OneToMany {
+  Cafe{ventas} to Venta{cafe(nombre) required}
+}
+
+// Venta - DetalleVenta (One to Many)
+relationship OneToMany {
+  Venta{detalles} to DetalleVenta{venta(id) required}
+}
+
+// Café - DetalleVenta (Many to One)
+relationship ManyToOne {
+  DetalleVenta{cafe(nombre) required} to Cafe
+}
+
+// Cupon - Venta (Many to One)
+relationship ManyToOne {
+  Venta{cupon} to Cupon
+}
+
+// Usuario - Venta (Many to One) - Solo para lectura
+relationship ManyToOne {
+  Venta{usuarioCreacion(nombre)} to Usuario
+}
+
+// ============================================
+// CONFIGURACIÓN DE SERVICIOS
+// ============================================
+
+// Generar Service y ServiceImpl
+service Cafe with serviceClass
+service Cliente with serviceClass
+service Venta with serviceClass
+service DetalleVenta with serviceClass
+service Usuario with serviceClass
+service Auditoria with serviceClass
+service Cupon with serviceClass
+service Reporte with serviceClass
+
+// ============================================
+// CONFIGURACIÓN DE REPOSITORIOS
+// ============================================
+
+// Generar Repositorios con Spring Data JPA
+repository Cafe with springframework
+repository Cliente with springframework
+repository Venta with springframework
+repository DetalleVenta with springframework
+repository Usuario with springframework
+repository Auditoria with springframework
+repository Cupon with springframework
+repository Reporte with springframework
+
+// ============================================
+// CONFIGURACIÓN DE DTOs
+// ============================================
+
+// DTO para Venta con detalles anidados
+dto Venta with mapstruct
+dto Cliente with mapstruct
+dto Cafe with mapstruct
+dto Usuario with mapstruct
+dto DetalleVenta with mapstruct
+dto Auditoria with mapstruct
+dto Cupon with mapstruct
+dto Reporte with mapstruct
+
+// ============================================
+// CONFIGURACIÓN DE BÚSQUEDA Y PAGINACIÓN
+// ============================================
+
+// Buscar entidades con Elasticsearch (opcional, comentar si no se necesita)
+// search Cafe with elasticsearch
+// search Cliente with elasticsearch
+// search Venta with elasticsearch
+
+// Permitir paginación en todas las entidades
+paginate * with pagination
+
+// ============================================
+// CONFIGURACIÓN DE CACHÉ
+// ============================================
+
+// Cache para datos que no cambian frecuentemente
+// skipCache Venta
+// skipCache DetalleVenta
+
+// ============================================
+// VALIDACIONES Y DATOS DE PRUEBA
+// ============================================
+
+// Opciones para generar datos de prueba
+// También se pueden cargar desde liquibase/changelog-master.xml
+
+// ============================================
+// NOTAS
+// ============================================
+/*
+ * Este JDL define un sistema completo de gestión de ventas de café con:
+ * 
+ * 1. Auditoría automática de cambios
+ * 2. Gestión de clientes y productos
+ * 3. Control de ventas y detalles
+ * 4. Sistema de cupones y descuentos
+ * 5. Reportes y análisis
+ * 6. Autenticación JWT
+ * 7. Frontend React
+ * 8. Base de datos PostgreSQL
+ * 
+ * Para generar el proyecto:
+ * jhipster import-jdl venta-cafe.jdl --force
+ */

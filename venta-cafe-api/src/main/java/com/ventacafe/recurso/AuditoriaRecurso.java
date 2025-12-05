@@ -52,10 +52,10 @@ public class AuditoriaRecurso {
         if (auditoria == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        auditoria.entidad = datos.entidad;
-        auditoria.operacion = datos.operacion;
-        auditoria.detalle = datos.detalle;
-        auditoria.fecha = datos.fecha;
+        auditoria.nombreEntidad = datos.nombreEntidad;
+        auditoria.accion = datos.accion;
+        auditoria.detalles = datos.detalles;
+        auditoria.fechaHora = datos.fechaHora;
         auditoria.usuario = datos.usuario;
         return Response.ok(auditoria).build();
     }

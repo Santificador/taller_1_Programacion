@@ -1,0 +1,137 @@
+application {
+  config {
+    baseName ventaCafeApp
+    applicationType monolith
+    packageName com.ventacafe
+    authenticationType jwt
+    databaseType postgresql
+    devDatabaseType postgresql
+    prodDatabaseType postgresql
+    cacheProvider ehcache
+    buildTool maven
+    clientFramework angular
+    nativeLanguage es
+    languages [en, es]
+    jhiPrefix jhi
+    testFrameworks [cypress]
+  }
+  entities *
+}
+
+/**
+ * Entidad Usuario - Usuarios del sistema
+ */
+entity Usuario {
+  nombre String required maxlength(100)
+  correo String required unique
+  rol String required maxlength(50)
+  activo Boolean required
+  fechaCreacion Instant required
+}
+
+/**
+ * Entidad Cliente - Clientes de la tienda
+ */
+entity Cliente {
+  nombre String required maxlength(100)
+  apellido String required maxlength(100)
+  email String required unique
+  telefono String required maxlength(20)
+  direccion String maxlength(500)
+  ciudad String maxlength(100)
+  estado String maxlength(100)
+  codigoPostal String maxlength(20)
+  activo Boolean required
+  fechaRegistro Instant required
+}
+
+/**
+ * Entidad Cafe - Tipos y marcas de café
+ */
+entity Cafe {
+  nombre String required maxlength(200)
+  descripcion String maxlength(1000)
+  precio BigDecimal required min(0)
+  origen String required maxlength(100)
+  tipoTostado Integer required min(1) max(5)
+  codigoProducto String unique maxlength(50)
+  inventario Integer required min(0)
+  activo Boolean required
+  imagenUrl String maxlength(500)
+  fechaCreacion Instant required
+}
+
+/**
+ * Entidad Venta - Registros de ventas
+ */
+entity Venta {
+  cantidad Integer required min(1)
+  precioUnitario BigDecimal required min(0)
+  montoTotal BigDecimal required min(0)
+  fecha LocalDate required
+  creadoPor String required maxlength(100)
+  fechaCreacion Instant required
+  modificadoPor String maxlength(100)
+  fechaModificacion Instant
+  observaciones String maxlength(500)
+}
+
+/**
+ * Entidad Auditoria - Registro completo de auditoría
+ */
+entity Auditoria {
+  nombreEntidad String required maxlength(100)
+  accion TipoAccion required
+  usuario String required maxlength(100)
+  fechaHora Instant required
+  idRegistro Long
+  detalles String maxlength(2000)
+  direccionIP String maxlength(50)
+  agenteUsuario String maxlength(500)
+}
+
+/**
+ * Enum para tipos de acción
+ */
+enum TipoAccion {
+  CREACION,
+  MODIFICACION,
+  ELIMINACION,
+  VISUALIZACION,
+  DESCARGA
+}
+
+/**
+ * Relaciones
+ */
+relationship ManyToOne {
+  Venta{cliente required} to Cliente
+  Venta{cafe required} to Cafe
+  Venta{usuario required} to Usuario
+}
+
+/**
+ * Paginación y búsqueda
+ */
+paginate Venta, Auditoria with infinite-scroll
+paginate Cliente, Cafe, Usuario with pagination
+
+/**
+ * DTOs
+ */
+dto * with mapstruct
+
+/**
+ * Servicio
+ */
+service * with serviceClass
+
+/**
+ * Búsqueda con Elasticsearch
+ */
+search Venta, Cliente, Cafe with elasticsearch
+
+/**
+ * Skip Client
+ */
+skipClient Auditoria

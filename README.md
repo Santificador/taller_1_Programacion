@@ -137,17 +137,6 @@ Desde IntelliJ IDEA:
 4. Pulsa `Generate`
 
 
-### 🌐 Visualización online
-
-También puedes acceder al Javadoc directamente desde GitHub Pages:
-
-🔗 [Documentación técnica Javadoc online](https://cristianpg1993.github.io/Proyecto-Java-EDD/)
 
 
----
 
-## 👨‍💻 Autor
-
-**Cristian Paños**  
-Repositorio GitHub: [@cristianpg1993](https://github.com/cristianpg1993)  
-DAM - Desarrollo de Aplicaciones Multiplataforma  
