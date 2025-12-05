@@ -190,3 +190,98 @@ Primer commit y push
 >>>>>>> cd321b82e0cfb87bba3690d1092f84657513828c
 
 
+
+Crear un Nuevo Componente Angular con un Botón “Volver al Inicio”- ASISTENCIA CLASE 01-12
+Fecha de entrega Viernes a las 23:59 Puntos 100 Entregando un cuadro de entrada de texto Disponible 1 de dic en 0:00 - 5 de dic en 23:59
+✔️ 1. Crear un nuevo componente Angular
+Dentro del proyecto JHipster (carpeta src/main/webapp/app), el alumno debe crear un componente llamado: volver-inicio
+
+El comando CLI correspondiente: ng generate component volver-inicio o ng g c volver-inicio
+
+Esto debe crear automáticamente:
+
+volver-inicio.component.ts
+
+volver-inicio.component.html
+
+volver-inicio.component.scss
+
+volver-inicio.component.spec.ts
+
+✔️ 2. Agregar el HTML del botón
+En el archivo generado src/main/webapp/app/volver-inicio/volver-inicio.component.html
+
+<button class="btn btn-primary" (click)="volverAlInicio()">
+  Volver al inicio
+</button>
+
+ 
+
+✔️ 3. Implementar la navegación en el componente
+En el archivo:  volver-inicio.component.ts
+
+import { Component } from '@angular/core';
+
+import { Router } from '@angular/router';
+
+ 
+
+@Component({
+
+  selector: 'jhi-volver-inicio',
+
+  templateUrl: './volver-inicio.component.html',
+
+  styleUrls: ['./volver-inicio.component.scss']
+
+})
+
+export class VolverInicioComponent {
+
+  constructor(private router: Router) {}
+
+ 
+
+  volverAlInicio(): void {
+
+    this.router.navigate(['/']);
+
+  }
+
+}
+
+✔️ 4. Registrar la ruta en Angular
+En el archivo: src/main/webapp/app/app-routing.module.ts o el correspondiente al generado en sus proyectos.
+
+{
+
+  path: 'volver',
+
+  component: VolverInicioComponent,
+
+}
+
+ 
+
+Esto permitirá navegar al componente mediante: 
+
+http://localhost:8080/#/volver
+
+ 
+
+✔️ 5. Agregar un enlace visible en la app
+En src/main/webapp/app/layouts/navbar/navbar.component.html o  el correspondiente generado en sus proyectos agregar :
+
+
+<li class="nav-item">
+
+  <a class="nav-link" routerLink="/volver">Volver</a>
+
+</li>
+
+✔️ 6. Validar funcionamiento
+Puede entrar a /volver
+
+El botón aparece y funciona
+
+Lo lleva al inicio correctamente
