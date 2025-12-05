@@ -1,0 +1,9 @@
+com\ventascafe\resource\ClienteControlador.class
+com\ventascafe\resource\VentaControlador.class
+com\ventascafe\VentasCafeApplication.class
+META-INF\panache-archive.marker
+com\ventascafe\entity\Cliente.class
+com\ventascafe\resource\Path.class
+com\ventascafe\service\ClienteServicio.class
+com\ventascafe\repository\ClienteRepositorio.class
+com\ventascafe\resource\PUT.class
