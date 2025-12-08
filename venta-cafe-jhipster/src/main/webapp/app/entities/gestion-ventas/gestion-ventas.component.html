@@ -1,0 +1,204 @@
+<div class="container-fluid mt-5">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="mb-4">
+        <i class="fa fa-shopping-cart me-2"></i>Gestión de Ventas - Tienda de Café
+      </h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Formulario de entrada -->
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="fa fa-plus-circle me-2"></i>Nueva Venta
+          </h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="ventaForm">
+            <!-- Campo Cliente -->
+            <div class="mb-3">
+              <label for="cliente" class="form-label">
+                <strong>Nombre del Cliente</strong>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="cliente"
+                placeholder="Ingrese el nombre del cliente"
+                formControlName="cliente"
+                [class.is-invalid]="ventaForm.get('cliente')?.invalid && ventaForm.get('cliente')?.touched"
+              />
+              <div class="invalid-feedback" *ngIf="ventaForm.get('cliente')?.invalid && ventaForm.get('cliente')?.touched">
+                El nombre debe tener al menos 3 caracteres
+              </div>
+            </div>
+
+            <!-- Campo Producto -->
+            <div class="mb-3">
+              <label for="producto" class="form-label">
+                <strong>Producto</strong>
+              </label>
+              <select
+                class="form-select"
+                id="producto"
+                formControlName="producto"
+                [class.is-invalid]="ventaForm.get('producto')?.invalid && ventaForm.get('producto')?.touched"
+              >
+                <option value="">-- Seleccionar producto --</option>
+                <option *ngFor="let p of productosDisponibles" [value]="p.id">
+                  {{ p.nombre }} - ${{ p.precioUnitario.toFixed(2) }}
+                </option>
+              </select>
+              <div class="invalid-feedback" *ngIf="ventaForm.get('producto')?.invalid && ventaForm.get('producto')?.touched">
+                Debe seleccionar un producto
+              </div>
+            </div>
+
+            <!-- Campo Cantidad -->
+            <div class="mb-3">
+              <label for="cantidad" class="form-label">
+                <strong>Cantidad</strong>
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                id="cantidad"
+                min="1"
+                max="100"
+                formControlName="cantidad"
+                [class.is-invalid]="ventaForm.get('cantidad')?.invalid && ventaForm.get('cantidad')?.touched"
+              />
+              <div class="invalid-feedback" *ngIf="ventaForm.get('cantidad')?.invalid && ventaForm.get('cantidad')?.touched">
+                Ingrese una cantidad válida (1-100)
+              </div>
+            </div>
+
+            <!-- Campo Notas -->
+            <div class="mb-3">
+              <label for="notas" class="form-label">
+                <strong>Notas (Opcional)</strong>
+              </label>
+              <textarea
+                class="form-control"
+                id="notas"
+                rows="3"
+                placeholder="Agregue notas adicionales sobre la venta..."
+                formControlName="notas"
+              ></textarea>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="d-grid gap-2">
+              <button
+                type="button"
+                class="btn btn-success btn-lg"
+                (click)="agregarProducto()"
+                [disabled]="ventaForm.get('producto')?.invalid || ventaForm.get('cantidad')?.invalid"
+              >
+                <i class="fa fa-plus me-2"></i>Agregar Producto
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen de Venta -->
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">
+            <i class="fa fa-list me-2"></i>Resumen de Venta
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- Cliente en resumen -->
+          <div class="alert alert-light" *ngIf="ventaForm.get('cliente')?.value">
+            <strong>Cliente:</strong>
+            <br />
+            {{ ventaForm.get('cliente')?.value }}
+          </div>
+
+          <!-- Tabla de Productos -->
+          <div *ngIf="productosSeleccionados.length > 0; else noProductos" class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>Producto</th>
+                  <th class="text-center">Cantidad</th>
+                  <th class="text-end">Precio Unit.</th>
+                  <th class="text-end">Subtotal</th>
+                  <th class="text-center">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let producto of productosSeleccionados; let i = index">
+                  <td>{{ producto.nombre }}</td>
+                  <td class="text-center">
+                    <span class="badge bg-secondary">{{ producto.cantidad }}</span>
+                  </td>
+                  <td class="text-end">${{ producto.precioUnitario.toFixed(2) }}</td>
+                  <td class="text-end">
+                    <strong>${{ (producto.cantidad * producto.precioUnitario).toFixed(2) }}</strong>
+                  </td>
+                  <td class="text-center">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-danger"
+                      (click)="eliminarProducto(i)"
+                      title="Eliminar producto"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <ng-template #noProductos>
+            <div class="alert alert-warning text-center">
+              <i class="fa fa-info-circle me-2"></i>No hay productos agregados aún
+            </div>
+          </ng-template>
+
+          <!-- Total -->
+          <div class="card mt-3 bg-light border-success">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h4 class="text-success">Total de Venta</h4>
+                </div>
+                <div class="col text-end">
+                  <h3 class="text-success mb-0">${{ totalVenta.toFixed(2) }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de Control -->
+          <div class="d-grid gap-2 mt-3">
+            <button
+              type="button"
+              class="btn btn-lg btn-primary"
+              (click)="registrarVenta()"
+              [disabled]="productosSeleccionados.length === 0 || ventaForm.get('cliente')?.invalid"
+            >
+              <i class="fa fa-check-circle me-2"></i>Registrar Venta
+            </button>
+            <button
+              type="button"
+              class="btn btn-lg btn-secondary"
+              (click)="limpiarFormulario()"
+            >
+              <i class="fa fa-refresh me-2"></i>Limpiar Formulario
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+{
+  "ventacafeappApp": {
+    "gestionVentas": {
+      "home": {
+        "title": "Gestión de Ventas"
+      },
+      "created": "Nueva venta creada con éxito",
+      "updated": "Venta actualizada con éxito",
+      "deleted": "Venta eliminada con éxito",
+      "delete": {
+        "question": "¿Está seguro de que desea eliminar este registro de venta?"
+      },
+      "detail": {
+        "title": "Detalles de la Venta"
+      }
+    }
+  }
+}

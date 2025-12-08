@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 /**
  * Clase de pruebas unitarias para la clase {@link GestorCafes}.
@@ -19,6 +20,13 @@ import java.io.PrintStream;
 
 public class GestorCafesTest {
 
+    private GestorCafes gestorCafes;
+
+    @BeforeEach
+    public void setUp() {
+        gestorCafes = new GestorCafes(new ArrayList<>());
+    }
+
     /**
      * Verifica que el mé_todo {@link GestorCafes#darAltaCafe()} añade correctamente un nuevo café
      * cuando se introducen datos válidos por consola.
@@ -31,15 +39,15 @@ public class GestorCafesTest {
     @Test
     public void testDarAltaCafe(){
 
-        GestorCafes.getListaCafes().clear();
+        gestorCafes.getListaCafes().clear();
 
-        String entradaSimulada = "Kenya AA\nArábica\nKenia\n10.5\n";
+        String entradaSimulada = "Kenya AA\nArábica\nKenia\n10.5\n5\n";
         System.setIn(new ByteArrayInputStream(entradaSimulada.getBytes()));
 
         ByteArrayOutputStream salidaCapturada = new ByteArrayOutputStream();
         System.setOut(new PrintStream(salidaCapturada));
 
-        GestorCafes.darAltaCafe();
+        gestorCafes.darAltaCafe();
 
         assertTrue(salidaCapturada.toString().contains("Café añadido correctamente"));
 
@@ -54,16 +62,16 @@ public class GestorCafesTest {
     @Test
     public void testEsCafeDuplicado(){
 
-        GestorCafes.getListaCafes().add(new Cafe("Colombia",
+        gestorCafes.getListaCafes().add(new Cafe("Colombia",
                 "Arábica","Colombia", 9.5, 4));
 
-        String entradaSimulada = "Colombia\nArábica\nColombia\n9.5\n";
+        String entradaSimulada = "Colombia\nArábica\nColombia\n9.5\n5\n";
         System.setIn(new ByteArrayInputStream(entradaSimulada.getBytes()));
 
         ByteArrayOutputStream salidaCapturada = new ByteArrayOutputStream();
         System.setOut(new PrintStream(salidaCapturada));
 
-        GestorCafes.darAltaCafe();
+        gestorCafes.darAltaCafe();
 
         assertTrue(salidaCapturada.toString().contains("Ese café ya está registrado"));
     }
@@ -80,16 +88,19 @@ public class GestorCafesTest {
     @Test
     public void testListarCafes(){
 
-        GestorCafes.getListaCafes().add(new Cafe("Colombia Supremo",
+        gestorCafes.getListaCafes().add(new Cafe("Colombia Supremo",
                 "Arábica", "Colombia", 9.5, 5));
 
-        GestorCafes.getListaCafes().add(new Cafe("Santos",
+        gestorCafes.getListaCafes().add(new Cafe("Santos",
                 "Robusta", "Brasil", 8.0, 5));
+
+        String entradaSimulada = "1\n4\n";
+        System.setIn(new ByteArrayInputStream(entradaSimulada.getBytes()));
 
         ByteArrayOutputStream salidaCapturada = new ByteArrayOutputStream();
         System.setOut(new PrintStream(salidaCapturada));
 
-        GestorCafes.listarCafes();
+        gestorCafes.listarCafes();
 
         assertTrue(salidaCapturada.toString().contains("Colombia Supremo"));
 
@@ -106,11 +117,11 @@ public class GestorCafesTest {
     @Test
     public void testBuscarCafePorVariedad(){
 
-        GestorCafes.getListaCafes().add(new Cafe("Nicaragua Gourmet",
+        gestorCafes.getListaCafes().add(new Cafe("Nicaragua Gourmet",
                 "Arábica", "Nicaragua", 9.0, 3));
-        GestorCafes.getListaCafes().add(new Cafe("Colombia Supremo",
+        gestorCafes.getListaCafes().add(new Cafe("Colombia Supremo",
                 "Arábica", "Colombia", 9.5, 4));
-        GestorCafes.getListaCafes().add(new Cafe("Vietnam Robusto",
+        gestorCafes.getListaCafes().add(new Cafe("Vietnam Robusto",
                 "Robusta", "Vietnam", 8.2, 3));
 
         String entradaSimulada = "Arábica\n";
@@ -119,7 +130,7 @@ public class GestorCafesTest {
         ByteArrayOutputStream salidaCapturada = new ByteArrayOutputStream();
         System.setOut(new PrintStream(salidaCapturada));
 
-        GestorCafes.buscarCafePorVariedad();
+        gestorCafes.buscarCafePorVariedad();
 
         assertTrue(salidaCapturada.toString().contains("Arábica"));
 
@@ -141,7 +152,7 @@ public class GestorCafesTest {
         ByteArrayOutputStream salidaCapturada = new ByteArrayOutputStream();
         System.setOut(new PrintStream(salidaCapturada));
 
-        GestorCafes.buscarCafePorVariedad();
+        gestorCafes.buscarCafePorVariedad();
 
         assertTrue(salidaCapturada.toString().contains("No se encontraron cafés con la variedad indicada."));
     }

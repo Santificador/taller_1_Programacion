@@ -46,13 +46,13 @@ public class MenuCafes {
 
                 switch (opcion) {
                     case 1:
-                        GestorCafes.darAltaCafe();
+                        gestorCafes.darAltaCafe();
                         break;
                     case 2:
-                        GestorCafes.listarCafes();
+                        gestorCafes.listarCafes();
                         break;
                     case 3:
-                        GestorCafes.buscarCafePorVariedad();
+                        gestorCafes.buscarCafePorVariedad();
                         break;
                     case 4:
                         System.out.println("Volviendo al menú principal....");

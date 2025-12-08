@@ -14,14 +14,14 @@ import java.util.*;
 
 public class GestorCafes {
 
-    private static  ArrayList<Cafe> listaCafes;
+    private ArrayList<Cafe> listaCafes;
 
     public GestorCafes(ArrayList<Cafe> listaCafes) {
         this.listaCafes = listaCafes;
     }
 
 
-    public  ArrayList<Cafe> getListaCafes() {
+    public ArrayList<Cafe> getListaCafes() {
         return listaCafes;
     }
 
@@ -39,7 +39,7 @@ public class GestorCafes {
      */
 
 
-    public static void darAltaCafe(){
+    public void darAltaCafe(){
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
 
@@ -110,7 +110,7 @@ public class GestorCafes {
      * La lista original no se modifica; se crea una copia temporal para mostrar los resultados.
      */
 
-    public static void listarCafes(){
+    public void listarCafes(){
 
         Scanner scanner = new Scanner(System.in);
         int opcion = 0;
@@ -164,7 +164,7 @@ public class GestorCafes {
      * Utiliza la entrada por consola para capturar la variedad a buscar.
      */
 
-    public static void buscarCafePorVariedad(){
+    public void buscarCafePorVariedad(){
 
         Scanner scanner = new Scanner(System.in);
 
