@@ -1,0 +1,32 @@
+{
+  "info": {
+    "name": "Ventas - Colección de ejemplo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Registrar venta",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idCliente\": 1,\n  \"items\": [{ \"producto\": \"Cafe A\", \"cantidad\": 2, \"precioUnitario\": 3.5 }]\n}"
+        },
+        "url": "http://localhost:8080/api/ventas"
+      }
+    },
+    {
+      "name": "Obtener venta",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/api/ventas/1"
+      }
+    }
+  ]
+}

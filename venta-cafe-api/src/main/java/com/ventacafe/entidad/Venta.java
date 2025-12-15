@@ -32,6 +32,9 @@ public class Venta {
     @Column(name = "FECHA_VENTAS")
     public LocalDate fecha;
 
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
+    public java.util.List<VentaDetalle> detalles = new java.util.ArrayList<>();
+
     // ========== CAMPOS DE AUDITORÍA ==========
     
     /**
@@ -76,5 +79,11 @@ public class Venta {
     public void registrarModificacion(String usuario) {
         this.modificadoPor = usuario;
         this.fechaModificacion = LocalDateTime.now();
+    }
+
+    // Ayuda a mantener la relación bidireccional
+    public void addDetalle(VentaDetalle det) {
+        this.detalles.add(det);
+        det.venta = this;
     }
 }

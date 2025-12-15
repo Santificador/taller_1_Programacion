@@ -5,6 +5,12 @@ import com.ventacafe.entidad.Venta;
 import com.ventacafe.enums.TipoAccion;
 import com.ventacafe.repositorio.AuditoriaRepositorio;
 import com.ventacafe.repositorio.VentaRepositorio;
+import com.ventacafe.servicio.VentaServicio;
+import com.ventacafe.dto.VentaRequestDTO;
+import com.ventacafe.dto.VentaResponseDTO;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import jakarta.validation.Valid;
 import io.quarkus.panache.common.Page;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -21,51 +27,35 @@ public class VentaRecurso {
     VentaRepositorio repositorio;
 
     @Inject
+    VentaServicio ventaServicio;
+
+    @Inject
     AuditoriaRepositorio auditoriaRepositorio;
 
     @GET
     public Response listar(@QueryParam("page") @DefaultValue("0") int page,
                            @QueryParam("size") @DefaultValue("10") int size) {
-        List<Venta> ventas = repositorio.findAll()
-                                        .page(Page.of(page, size))
-                                        .list();
+        List<VentaResponseDTO> ventas = ventaServicio.listarVentas();
         return Response.ok(ventas).build();
     }
 
     @GET
     @Path("/{id}")
     public Response obtenerPorId(@PathParam("id") Long id) {
-        Venta venta = repositorio.findById(id);
-        if (venta == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(venta).build();
+        VentaResponseDTO dto = ventaServicio.obtenerPorId(id);
+        return Response.ok(dto).build();
     }
 
     @POST
     @Transactional
-    public Response crear(Venta venta, 
+    @Operation(summary = "Registrar venta")
+    @APIResponse(responseCode = "201", description = "Venta creada")
+    public Response crear(@Valid VentaRequestDTO request, 
                           @Context UriInfo uriInfo,
                           @HeaderParam("X-Usuario") @DefaultValue("sistema") String usuario) {
-        
-        // Registrar auditoría de creación en la entidad
-        venta.registrarCreacion(usuario);
-        
-        // Persistir la venta
-        repositorio.persist(venta);
-        
-        // Crear registro de auditoría
-        String detalle = String.format("Venta creada: Cliente=%s, Cafe=%s, Cantidad=%d, Total=%.2f",
-                venta.cliente != null ? venta.cliente.id_cliente : "N/A",
-                venta.cafe != null ? venta.cafe.id_cafe : "N/A",
-                venta.cantidad,
-                venta.montoTotal);
-        
-        Auditoria auditoria = Auditoria.crear("Venta", TipoAccion.CREACION, usuario, venta.id, detalle);
-        auditoriaRepositorio.persist(auditoria);
-        
-        UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(venta.id));
-        return Response.created(builder.build()).entity(venta).build();
+        VentaResponseDTO creado = ventaServicio.registrarVenta(request, usuario);
+        UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(creado.getId()));
+        return Response.created(builder.build()).entity(creado).build();
     }
 
     @PUT
