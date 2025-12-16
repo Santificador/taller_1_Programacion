@@ -240,10 +240,7 @@ public class GestorVentas {
 
 
             System.out.println("¿Deseas añadir otro café? (s/n): ");
-            String respuesta = "";
-            if (scanner.hasNextLine()) {
-                respuesta = scanner.nextLine().trim().toLowerCase();
-            }
+            String respuesta = scanner.nextLine().trim().toLowerCase();
             if (!respuesta.equals("s")){
                 break;
             }
