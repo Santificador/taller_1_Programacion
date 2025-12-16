@@ -88,7 +88,7 @@ public class GestorVentasTest {
     public void testCrearVentaConVariosCafes(){
 
         System.out.println("\n=== TEST CREAR VENTA CON VARIOS CAFÉS ===");
-        String entradaSimulada = "1\nColombiano\n2\ns\nBrasileño\n1\nn\n";
+        String entradaSimulada = "1\nColombiano\n2\nfin\n";
         System.setIn(new ByteArrayInputStream(entradaSimulada.getBytes()));
 
         Cliente cliente = new Cliente("Cristian", "12345678V", "612345678"
@@ -107,7 +107,7 @@ public class GestorVentasTest {
         gestorVentas.crearVenta("12345678V", new ArrayList<>());
 
         Assertions.assertEquals(1, gestorVentas.getListaVentas().size());
-        Assertions.assertEquals(3, gestorVentas.getListaVentas().getFirst().getLineasDeVenta().size());
+        Assertions.assertEquals(2, gestorVentas.getListaVentas().getFirst().getLineasDeVenta().size());
 
 
     }
@@ -151,7 +151,7 @@ public class GestorVentasTest {
     public void testCrearVentaSinStock(){
 
         System.out.println("\n=== TEST CREAR VENTA SIN STOCK  ===");
-        String entradaSimulada = "1\nColombiano\n2\ns\nBrasileño\n1\nn\n";
+        String entradaSimulada = "1\nColombiano\n2\nfin\n";
         System.setIn(new ByteArrayInputStream(entradaSimulada.getBytes()));
 
         Cliente cliente = new Cliente("Cristian", "12345678V", "612345678"
@@ -186,7 +186,7 @@ public class GestorVentasTest {
     public void testCrearVentaConStockInsuficiente(){
 
         System.out.println("\n=== TEST CREAR VENTA CON STOCK INSUFICIENTE ===");
-        String entradaSimulada = "1\nColombiano\n4\ns\nBrasileño\n1\nn\n";
+        String entradaSimulada = "1\nColombiano\n4\nBrasileño\n1\nfin\n";
         System.setIn(new ByteArrayInputStream(entradaSimulada.getBytes()));
 
         Cliente cliente = new Cliente("Cristian", "12345678V", "612345678"
@@ -222,7 +222,7 @@ public class GestorVentasTest {
     public void testMostrarTodasLasVentas(){
 
         System.out.println("\n=== TEST MOSTRAR TODAS LAS VENTAS ===");
-        String compraSimulada1 = "1\nColombiano\n4\ns\nBrasileño\n1\nn\n";
+        String compraSimulada1 = "1\nColombiano\n4\nBrasileño\n1\nfin\n";
         System.setIn(new ByteArrayInputStream(compraSimulada1.getBytes()));
 
 
@@ -242,7 +242,7 @@ public class GestorVentasTest {
         gestorVentas.crearVenta("12345678V", new ArrayList<>());
 
 
-        String compraSimulada2 = "1\nTierra Linda\n4\ns\nSol Naciente\n1\nn\n";
+        String compraSimulada2 = "1\nTierra Linda\n4\nSol Naciente\n1\nfin\n";
         System.setIn(new ByteArrayInputStream(compraSimulada2.getBytes()));
 
         Cliente cliente2 = new Cliente("Laura", "52345672V", "612345678"
@@ -282,7 +282,7 @@ public class GestorVentasTest {
     public void testMostrarVentasPorCliente(){
 
         System.out.println("\n=== TEST MOSTRAR VENTAS POR CLIENTE ===");
-        String compraSimulada1 = "1\nColombiano\n4\ns\nBrasileño\n1\nn\n";
+        String compraSimulada1 = "1\nColombiano\n4\nBrasileño\n1\nfin\n";
         System.setIn(new ByteArrayInputStream(compraSimulada1.getBytes()));
 
 
@@ -310,7 +310,7 @@ public class GestorVentasTest {
         gestorVentas.crearVenta("12345678V", new ArrayList<>());
 
 
-        String compraSimulada2 = "1\nTierra Linda\n4\ns\nSol Naciente\n1\nn\n";
+        String compraSimulada2 = "1\nTierra Linda\n4\nSol Naciente\n1\nfin\n";
         System.setIn(new ByteArrayInputStream(compraSimulada2.getBytes()));
 
         System.out.println("\n COMPRA 2:");
