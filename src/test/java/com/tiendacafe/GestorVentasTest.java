@@ -107,7 +107,7 @@ public class GestorVentasTest {
         gestorVentas.crearVenta("12345678V", new ArrayList<>());
 
         Assertions.assertEquals(1, gestorVentas.getListaVentas().size());
-        Assertions.assertEquals(3, gestorVentas.getListaVentas().get(0).getLineasDeVenta().size());
+        Assertions.assertEquals(3, gestorVentas.getListaVentas().getFirst().getLineasDeVenta().size());
 
 
     }
@@ -170,7 +170,7 @@ public class GestorVentasTest {
         gestorVentas.crearVenta("12345678V", new ArrayList<>());
 
         Assertions.assertEquals(1, gestorVentas.getListaVentas().size());
-        Assertions.assertEquals(1, gestorVentas.getListaVentas().get(0).getLineasDeVenta().size());
+        Assertions.assertEquals(1, gestorVentas.getListaVentas().getFirst().getLineasDeVenta().size());
 
     }
 
@@ -205,7 +205,7 @@ public class GestorVentasTest {
         gestorVentas.crearVenta("12345678V", new ArrayList<>());
 
         Assertions.assertEquals(1, gestorVentas.getListaVentas().size());
-        Assertions.assertEquals(2, gestorVentas.getListaVentas().get(0).getLineasDeVenta().size());
+        Assertions.assertEquals(2, gestorVentas.getListaVentas().getFirst().getLineasDeVenta().size());
 
     }
 

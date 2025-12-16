@@ -113,7 +113,7 @@ public class GestorClientesTest {
         System.setIn(new ByteArrayInputStream(modificarNombre.getBytes()));
         gestor.modificarCliente();
 
-        Cliente cliente = gestor.getListaClientes().get(0);
+        Cliente cliente = gestor.getListaClientes().getFirst();
         assertEquals("PEPE",cliente.getNombre());
     }
 
@@ -133,7 +133,7 @@ public class GestorClientesTest {
         System.setIn(new ByteArrayInputStream(modificarTelefono.getBytes()));
         gestor.modificarCliente();
 
-        Cliente cliente  = gestor.getListaClientes().get(0);
+        Cliente cliente  = gestor.getListaClientes().getFirst();
         assertEquals("626451692",cliente.getTelefono());
     }
 
@@ -153,7 +153,7 @@ public class GestorClientesTest {
         System.setIn(new ByteArrayInputStream(modificarEmail.getBytes()));
         gestor.modificarCliente();
 
-        Cliente cliente = gestor.getListaClientes().get(0);
+        Cliente cliente = gestor.getListaClientes().getFirst();
         assertEquals("laura@email.com", cliente.getEmail());
     }
 
