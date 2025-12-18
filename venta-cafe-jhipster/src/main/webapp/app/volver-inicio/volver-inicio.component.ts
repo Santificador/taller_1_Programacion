@@ -10,6 +10,6 @@ export class VolverInicioComponent {
   constructor(private router: Router) {}
 
   volverAlInicio(): void {
-    this.router.navigate(['/volver']);
+    this.router.navigate(['/']);
   }
 }
