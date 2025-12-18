@@ -1,0 +1,55 @@
+# ===================================================================
+# Spring Boot configuration for stand-alone testing without database.
+# Used for testing the frontend without external database dependency
+# ===================================================================
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
+  liquibase:
+    enabled: false
+  devtools:
+    restart:
+      enabled: false
+  jackson:
+    serialization:
+      indent-output: true
+
+logging:
+  level:
+    ROOT: INFO
+    com.ventacafe: DEBUG
+
+server:
+  port: 8080
+
+jhipster:
+  cache:
+    ehcache:
+      time-to-live-seconds: 3600
+      max-entries: 100
+  cors:
+    allowed-origins: 'http://localhost:8100,https://localhost:8100,http://localhost:9000,https://localhost:9000,http://localhost:4200,https://localhost:4200'
+    allowed-origin-patterns: 'https://*.githubpreview.dev'
+    allowed-methods: '*'
+    allowed-headers: '*'
+    exposed-headers: 'Authorization,Link,X-Total-Count'
+    allow-credentials: true
+    max-age: 1800
+  security:
+    authentication:
+      jwt:
+        base64-secret: ZTk5NjYyNWVmMmJjZjFhMTBiNmU0MTJiYzYzNTQ0ZDlkZjk3ZjdhODMwMmYxY2Q4YWUwMTFkNjYyNjdlZjRmYzg5NDNjMDQ3YjNkZjZmYjkyODIyZTQ0YTI0YjNmYjkzY2FiOTBiNTZiN2YwZDliZTZkNzZhYjIxYzBlMTRlNDU=
+        token-validity-in-seconds: 86400
+        token-validity-in-seconds-for-remember-me: 2592000
+  mail:
+    base-url: http://127.0.0.1:8080
+
+

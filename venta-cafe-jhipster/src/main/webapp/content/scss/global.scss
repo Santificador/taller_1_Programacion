@@ -233,4 +233,118 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
     }
   }
 }
+
+/* ========== Modern Theme Styling ========== */
+
+// Table styling
+table {
+  background-color: white;
+  border-collapse: collapse;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+thead th {
+  font-weight: 600;
+  color: #333;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: #f9f9f9;
+  }
+}
+
+tbody td {
+  padding: 12px 15px;
+}
+
+// Button styling
+.btn {
+  border-radius: 0.25rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.6rem 1.2rem;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  &.btn-primary,
+  &.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    
+    &:hover {
+      background-color: #138496;
+      border-color: #138496;
+    }
+  }
+  
+  &.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  &.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+}
+
+// Card styling
+.card {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+  }
+}
+
+// Container background
+.container-fluid {
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.jh-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+// Navbar styling
+.navbar {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: #17a2b8 !important;
+  font-size: 1.3rem;
+}
+
+// Badge styling
+.badge {
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+}
+
 /* jhipster-needle-scss-add-main JHipster will add new css style */

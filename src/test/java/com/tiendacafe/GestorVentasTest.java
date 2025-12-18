@@ -151,7 +151,7 @@ public class GestorVentasTest {
     public void testCrearVentaSinStock(){
 
         System.out.println("\n=== TEST CREAR VENTA SIN STOCK  ===");
-        String entradaSimulada = "1\nColombiano\n2\nfin\n";
+        String entradaSimulada = "1\nColombiano\n2\nBrasileño\n1\nfin\n";
         System.setIn(new ByteArrayInputStream(entradaSimulada.getBytes()));
 
         Cliente cliente = new Cliente("Cristian", "12345678V", "612345678"
@@ -186,7 +186,7 @@ public class GestorVentasTest {
     public void testCrearVentaConStockInsuficiente(){
 
         System.out.println("\n=== TEST CREAR VENTA CON STOCK INSUFICIENTE ===");
-        String entradaSimulada = "1\nColombiano\n4\nBrasileño\n1\nfin\n";
+        String entradaSimulada = "1\nColombiano\n1\nBrasileño\n1\nfin\n";
         System.setIn(new ByteArrayInputStream(entradaSimulada.getBytes()));
 
         Cliente cliente = new Cliente("Cristian", "12345678V", "612345678"
